@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <h3>Locations</h3>
+  <div>
+    <% locations.each do |location| %>
+      <p><b>Latitude:</b> <%= location.latitude %></p>
+      <p><b>Longitude:</b> <%= location.longitude %></p>
+    <% end %>
+  </div>
+  <br>
+  <form action="/register" method="POST">
+    <label for="latitude">latitude</label>
+    <input type="text" name="latitude" class="js-latitude">
+    <label for="longitude">longitude</label>
+    <input type="text" name="longitude" class="js-longitude">
+    <input type="submit">
+  </form>
+  <script src="index.js"></script>
+</body>
+</html>
