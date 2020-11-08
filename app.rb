@@ -1,6 +1,5 @@
 require "sinatra"
 
-require "./gateways/in_memory_location_gateway"
 require "./gateways/redis_location_gateway"
 
 location_gateway = RedisLocationGateway.new

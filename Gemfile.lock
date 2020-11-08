@@ -19,8 +19,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  redis
-  sinatra
+  redis (= 4.2.2)
+  sinatra (= 2.1.0)
 
 BUNDLED WITH
    1.17.3
