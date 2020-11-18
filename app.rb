@@ -2,11 +2,20 @@ require "sinatra"
 
 require "./gateways/redis_location_gateway"
 
-location_gateway = RedisLocationGateway.new
+def location_gateway
+  RedisLocationGateway.new
+end
+
+def locations
+  location_gateway.get_all
+end
 
 get "/" do
-  locations = location_gateway.get_all
   erb :index, locals: { locations: locations }
+end
+
+get "/map" do
+  erb :map, locals: { locations: locations }
 end
 
 post "/register" do
