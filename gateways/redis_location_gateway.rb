@@ -4,13 +4,15 @@ require "json"
 require "redis"
 
 class RedisLocationGateway
+  LOCATIONS_COLLECTION_NAME = "locations"
+
   def save(data)
     locations << {
       "latitude" => data.latitude,
       "longitude" => data.longitude
     }
 
-    client.set("locations", locations.to_json)
+    client.set(LOCATIONS_COLLECTION_NAME, locations.to_json)
   end
 
   def get_all
@@ -27,13 +29,13 @@ class RedisLocationGateway
   private
 
   def locations
-    create_locations_array if client.get("locations").nil?
+    create_locations_array if client.get(LOCATIONS_COLLECTION_NAME).nil?
 
-    @locations ||= JSON.parse(client.get("locations"))
+    @locations ||= JSON.parse(client.get(LOCATIONS_COLLECTION_NAME))
   end
 
   def create_locations_array
-    client.set("locations", [].to_json)
+    client.set(LOCATIONS_COLLECTION_NAME, [].to_json)
   end
 
   def client
