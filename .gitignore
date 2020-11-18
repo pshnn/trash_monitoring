@@ -1,2 +1,5 @@
 # Vim
 *.swp
+
+# Environment
+.env
