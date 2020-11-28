@@ -1,31 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title></title>
-</head>
-<body>
-  <div>
-    <a href="/map">Map</a>
-  </div>
-  <button class="js-get-location-btn">Get location</button>
-  <form action="/register" method="POST">
-    <label for="latitude">latitude</label>
-    <input type="text" name="latitude" class="js-latitude">
-    <label for="longitude">longitude</label>
-    <input type="text" name="longitude" class="js-longitude">
-    <input type="submit">
-  </form>
-  <br>
-  <h3>Locations</h3>
-  <div>
-    <% locations.each do |location| %>
-      <p>
-        <b>Latitude:</b> <%= location.latitude %> 
-        <b>Longitude:</b> <%= location.longitude %>
-      </p>
-    <% end %>
-  </div>
-  <script src="index.js"></script>
-</body>
-</html>
+<div>
+  <a href="/map">Map</a>
+</div>
+<button class="js-get-location-btn">Get location</button>
+<form action="/register" method="POST">
+  <label for="latitude">latitude</label>
+  <input type="text" name="latitude" class="js-latitude">
+  <label for="longitude">longitude</label>
+  <input type="text" name="longitude" class="js-longitude">
+  <input type="submit">
+</form>
+<br>
+<h3>Locations</h3>
+<div>
+  <% locations.each do |location| %>
+    <p>
+      <b>Latitude:</b> <%= location.latitude %> 
+      <b>Longitude:</b> <%= location.longitude %>
+    </p>
+  <% end %>
+</div>
+<script src="index.js"></script>
