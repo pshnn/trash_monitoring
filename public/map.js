@@ -17,8 +17,6 @@ map.addControl(
 const locations = document.getElementsByClassName("js-location");
 const locationsCount = locations.length;
 
-console.log("locations::", locations);
-
 for (i = 0; i < locations.length; i++) {
   let locationData = locations[i].dataset;
   new mapboxgl.Marker().setLngLat([locationData.longitude, locationData.latitude]).addTo(map);
