@@ -12,6 +12,10 @@ class InMemoryLocationGateway
     locations
   end
 
+  def delete_all
+    @locations = []
+  end
+
   private
 
   def locations
