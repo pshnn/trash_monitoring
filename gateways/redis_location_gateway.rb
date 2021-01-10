@@ -16,25 +16,34 @@ class RedisLocationGateway
   end
 
   def get_all
-    location_struct = Struct.new(:latitude, :longitude)
+    return [] if locations.empty?
 
     locations.map do |location|
-      location_struct.new(
+      Struct.new(
+        :latitude,
+        :longitude
+      ).new(
         location["latitude"],
         location["longitude"]
       ) 
     end
   end
 
+  def delete_all
+    setup_empty_locations_array
+
+    @locations = []
+  end
+
   private
 
   def locations
-    create_locations_array if client.get(LOCATIONS_COLLECTION_NAME).nil?
+    setup_empty_locations_array if client.get(LOCATIONS_COLLECTION_NAME).nil?
 
     @locations ||= JSON.parse(client.get(LOCATIONS_COLLECTION_NAME))
   end
 
-  def create_locations_array
+  def setup_empty_locations_array
     client.set(LOCATIONS_COLLECTION_NAME, [].to_json)
   end
 
