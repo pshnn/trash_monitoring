@@ -1,5 +1,7 @@
-require "dotenv/load"
+# frozen_string_literal: true
 
-require "./app"
+require 'dotenv/load'
+
+require './app'
 
 run Sinatra::Application
