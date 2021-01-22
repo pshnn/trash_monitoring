@@ -1,21 +1,22 @@
 # frozen_string_literal: true
 
-require "json"
-require "redis"
+require 'json'
+require 'redis'
 
+# Gateway for location records using Redis
 class RedisLocationGateway
-  LOCATIONS_COLLECTION_NAME = "locations"
+  LOCATIONS_COLLECTION_NAME = 'locations'
 
   def save(data)
     locations << {
-      "latitude" => data.latitude,
-      "longitude" => data.longitude
+      'latitude' => data.latitude,
+      'longitude' => data.longitude
     }
 
     client.set(LOCATIONS_COLLECTION_NAME, locations.to_json)
   end
 
-  def get_all
+  def all
     return [] if locations.empty?
 
     locations.map do |location|
@@ -23,9 +24,9 @@ class RedisLocationGateway
         :latitude,
         :longitude
       ).new(
-        location["latitude"],
-        location["longitude"]
-      ) 
+        location['latitude'],
+        location['longitude']
+      )
     end
   end
 
@@ -33,6 +34,12 @@ class RedisLocationGateway
     setup_empty_locations_array
 
     @locations = []
+  end
+
+  def find_by_coordinates(location)
+    all.find do |l|
+      l.latitude == location.latitude && l.longitude == location.longitude
+    end
   end
 
   private
@@ -48,6 +55,6 @@ class RedisLocationGateway
   end
 
   def client
-    @client ||= Redis.new(url: ENV["REDIS_URL"])
+    @client ||= Redis.new(url: ENV['REDIS_URL'])
   end
 end
