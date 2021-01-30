@@ -13,10 +13,12 @@
 <h3>Locations</h3>
 <div>
   <% locations.each do |location| %>
-    <p>
-      <b>Latitude:</b> <%= location.latitude %> 
-      <b>Longitude:</b> <%= location.longitude %>
-    </p>
+    <a href="<%= location.link %>">
+      <p>
+        <b>Latitude:</b> <%= location.latitude %> 
+        <b>Longitude:</b> <%= location.longitude %>
+      </p>
+    </a>
   <% end %>
 </div>
 <script src="index.js"></script>

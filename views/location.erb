@@ -1,0 +1,10 @@
+<h1>Location page</h1>
+
+<div class="js-location" data-latitude="<%= location.latitude %>" data-longitude="<%= location.longitude %>">
+  <p>Latitude: <%= location.latitude %></p>
+  <p>Longitude: <%= location.longitude %></p>
+</div>
+
+<div id='map' style='width: 100%; height: 650px;'></div>
+
+<script type="module" src="location.js"></script>

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Gateway for working with location records in application memory
 class InMemoryLocationGateway
   def save(data)
     locations << Struct.new(:latitude, :longitude).new(
@@ -8,7 +9,7 @@ class InMemoryLocationGateway
     )
   end
 
-  def get_all
+  def all
     locations
   end
 
