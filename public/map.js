@@ -1,23 +1,21 @@
-mapboxgl.accessToken = "pk.eyJ1IjoiZW1lbGRtb24iLCJhIjoiY2tobnM1YXhmMGZmMDJyazhpa2g4ZDhsaSJ9.j7xg-pGQhSsvZoHAkoAr9w";
+import { Map } from "./map_constructor.js";
 
-const map = new mapboxgl.Map({
+const map = new Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
-  zoom: 12,
-  center: [35.8703535, 48.5317201]
+  zoom: 14,
+  center: [35.8753535, 48.5017201]
 });
-
-map.addControl(
-  new mapboxgl.GeolocateControl({
-    positionOptions: { enableHighAccuracy: true },
-    trackUserLocation: true
-  })
-);
 
 const locations = document.getElementsByClassName("js-location");
 const locationsCount = locations.length;
 
-for (i = 0; i < locations.length; i++) {
+for (let i = 0; i < locations.length; i++) {
   let locationData = locations[i].dataset;
-  new mapboxgl.Marker().setLngLat([locationData.longitude, locationData.latitude]).addTo(map);
+  locationData = {
+    longitude: locationData.longitude,
+    latitude: locationData.latitude,
+  };
+
+  map.addMarker(locationData);
 }
