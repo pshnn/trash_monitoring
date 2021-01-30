@@ -3,6 +3,7 @@
 require 'sinatra'
 
 require './gateways/redis_location_gateway'
+require './presenters/json_presenter'
 
 def location_gateway
   RedisLocationGateway.new
@@ -44,4 +45,9 @@ post '/register' do
   )
 
   redirect to '/'
+end
+
+get '/export/locations' do
+  # location_gateway.all.to_s
+  JsonPresenter.to_json(location_gateway.all)
 end
