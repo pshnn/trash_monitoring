@@ -1,7 +1,7 @@
-import { Map } from "./map_constructor.js";
+import { Map } from './map_constructor.js';
 
 const getLocationData = () => {
-  const locations = document.getElementsByClassName("js-location");
+  const locations = document.getElementsByClassName('js-location');
   const locationData = locations[0].dataset;
 
   return locationData;
@@ -20,3 +20,17 @@ map.addMarker({
   latitude: locationData.latitude,
   longitude: locationData.longitude,
 });
+
+const setupDeleteLocationConfirmation = () => {
+  const deleteLocationForm = document.getElementsByClassName('js-delete-location')[0];
+
+  deleteLocationForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const isDeletionConfirmed = confirm('Are you sure?');
+
+    if (isDeletionConfirmed) { deleteLocationForm.submit(); }
+  });
+};
+
+setupDeleteLocationConfirmation();

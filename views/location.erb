@@ -10,7 +10,14 @@
 </div>
 
 <div>
-  <a href="<%= delete_location_path %>">Delete</a>
+  <form
+    action="<%= delete_location_path %>"
+    method="post"
+    class="js-delete-location"
+  >
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete">
+  </form>
 </div>
 
 <div id='map' style='width: 100%; height: 650px;'></div>
