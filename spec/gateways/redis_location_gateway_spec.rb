@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe RedisLocationGateway do
-  let(:gateway) { RedisLocationGateway.new }
+  let(:gateway) { described_class.new }
 
   let(:create_location) do
     gateway.save(
@@ -16,7 +16,7 @@ describe RedisLocationGateway do
   end
 
   before do
-    RedisLocationGateway.new.delete_all
+    described_class.new.delete_all
   end
 
   describe '#find_by_coordinates' do
@@ -29,30 +29,48 @@ describe RedisLocationGateway do
     end
 
     context 'when there is location with same coordinates' do
-      it 'returns object with location data' do
-        latitude = 34.346245235
-        longitude = 87.1234125352
+      let(:latitude) { 34.346245235 }
+      let(:longitude) { 87.1234125352 }
+
+      it 'returns object with proper latitude' do
         location_data = Struct.new(:latitude, :longitude).new(latitude, longitude)
 
         gateway.save(location_data)
 
         location = gateway.find_by_coordinates(location_data)
         expect(location.latitude).to eq location_data.latitude
-        expect(location.longitude).to eq location_data.longitude
       end
 
-      context 'when coordinates passed as string' do
-        it 'returns object with location data' do
-          latitude = '34.346245235'
-          longitude = '87.1234125352'
-          location_data = Struct.new(:latitude, :longitude).new(latitude, longitude)
+      it 'returns object with proper longitude' do
+        location_data = Struct.new(:latitude, :longitude).new(latitude, longitude)
 
-          gateway.save(location_data)
+        gateway.save(location_data)
 
-          location = gateway.find_by_coordinates(location_data)
-          expect(location.latitude).to eq location_data.latitude
-          expect(location.longitude).to eq location_data.longitude
-        end
+        location = gateway.find_by_coordinates(location_data)
+        expect(location.longitude).to eq location_data.longitude
+      end
+    end
+
+    context 'when there is location with same coordinates and coordinates passed as string' do
+      let(:latitude) { '34.346245235' }
+      let(:longitude) { '87.1234125352' }
+
+      it 'returns object with proper latitude' do
+        location_data = Struct.new(:latitude, :longitude).new(latitude, longitude)
+
+        gateway.save(location_data)
+
+        location = gateway.find_by_coordinates(location_data)
+        expect(location.latitude).to eq location_data.latitude
+      end
+
+      it 'returns object with proper longitude' do
+        location_data = Struct.new(:latitude, :longitude).new(latitude, longitude)
+
+        gateway.save(location_data)
+
+        location = gateway.find_by_coordinates(location_data)
+        expect(location.longitude).to eq location_data.longitude
       end
     end
   end

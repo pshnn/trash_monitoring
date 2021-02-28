@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe InMemoryLocationGateway do
-  let(:gateway) { InMemoryLocationGateway.new }
+  let(:gateway) { described_class.new }
 
   describe '#all' do
     context 'when there is no saved locations' do
@@ -15,30 +15,18 @@ describe InMemoryLocationGateway do
     end
 
     context 'when there is one saved location' do
+      let(:location_data) do
+        Struct.new(:latitude, :longitude).new('54.2374627634', '34.9823742634')
+      end
+
       it 'returns array' do
-        gateway.save(
-          Struct.new(
-            :latitude,
-            :longitude
-          ).new(
-            '54.2374627634',
-            '34.9823742634'
-          )
-        )
+        gateway.save(location_data)
 
         expect(gateway.all).to be_kind_of Array
       end
 
       it 'returns not empty object' do
-        gateway.save(
-          Struct.new(
-            :latitude,
-            :longitude
-          ).new(
-            '54.2374627634',
-            '34.9823742634'
-          )
-        )
+        gateway.save(location_data)
 
         expect(gateway.all).not_to be_empty
       end
@@ -71,16 +59,12 @@ describe InMemoryLocationGateway do
     end
 
     context 'when there was some records created' do
+      let(:location_data) do
+        Struct.new(:latitude, :longitude).new('54.2374627634', '34.9823742634')
+      end
+
       it 'deletes all location records' do
-        gateway.save(
-          Struct.new(
-            :latitude,
-            :longitude
-          ).new(
-            '54.2374627634',
-            '34.9823742634'
-          )
-        )
+        gateway.save(location_data)
 
         gateway.delete_all
 

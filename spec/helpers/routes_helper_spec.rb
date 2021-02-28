@@ -15,18 +15,13 @@ describe RoutesHelper do
 
   describe '.edit_location_path' do
     context 'when coordinates were passed' do
-      it 'returns proper edit location path' do
-        latitude = '34.1234567'
-        longitude = '87.1234567'
+      let(:latitude) { '34.1234567' }
+      let(:longitude) { '87.1234567' }
 
+      it 'returns proper edit location path' do
         expect(
-          described_class.edit_location_path(
-            latitude: latitude,
-            longitude: longitude
-          )
-        ).to(
-          eq("/locations/edit?latitude=#{latitude}&longitude=#{longitude}")
-        )
+          described_class.edit_location_path(latitude: latitude, longitude: longitude)
+        ).to(eq("/locations/edit?latitude=#{latitude}&longitude=#{longitude}"))
       end
     end
 
@@ -39,18 +34,13 @@ describe RoutesHelper do
 
   describe '.delete_location_path' do
     context 'when coordinates were passed' do
-      it 'returns proper edit location path' do
-        latitude = '34.1234567'
-        longitude = '87.1234567'
+      let(:latitude) { '34.1234567' }
+      let(:longitude) { '87.1234567' }
 
+      it 'returns proper edit location path' do
         expect(
-          described_class.delete_location_path(
-            latitude: latitude,
-            longitude: longitude
-          )
-        ).to(
-          eq("/locations?latitude=#{latitude}&longitude=#{longitude}")
-        )
+          described_class.delete_location_path(latitude: latitude, longitude: longitude)
+        ).to(eq("/locations?latitude=#{latitude}&longitude=#{longitude}"))
       end
     end
 
