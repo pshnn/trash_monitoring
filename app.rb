@@ -51,14 +51,25 @@ end
 post '/register' do
   location_gateway.save(
     Struct.new(:latitude, :longitude).new(
-      params['latitude'], params['longitude']
+      params[:latitude],
+      params[:longitude]
     )
   )
 
   redirect to '/'
 end
 
+delete RoutesHelper.delete_location_path do
+  location_gateway.delete(
+    Struct.new(:latitude, :longitude).new(
+      params[:latitude],
+      params[:longitude]
+    )
+  )
+
+  redirect to RoutesHelper.root_path
+end
+
 get '/export/locations' do
-  # location_gateway.all.to_s
   JsonPresenter.to_json(location_gateway.all)
 end
