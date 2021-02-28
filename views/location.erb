@@ -5,6 +5,14 @@
   <p>Longitude: <%= location.longitude %></p>
 </div>
 
+<div>
+  <a href="<%= edit_location_path %>">Edit</a>
+</div>
+
+<div>
+  <a href="<%= delete_location_path %>">Delete</a>
+</div>
+
 <div id='map' style='width: 100%; height: 650px;'></div>
 
 <script type="module" src="location.js"></script>
