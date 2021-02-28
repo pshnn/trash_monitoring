@@ -4,12 +4,13 @@ require 'sinatra'
 
 require './gateways/redis_location_gateway'
 require './presenters/json_presenter'
+require './helpers/routes_helper'
 
 def location_gateway
   RedisLocationGateway.new
 end
 
-get '/' do
+get RoutesHelper.root_path do
   locations = location_gateway.all.map do |l|
     Struct.new(
       :latitude,
@@ -25,7 +26,7 @@ get '/' do
   erb :index, locals: { locations: locations }
 end
 
-get '/map' do
+get RoutesHelper.map_path do
   erb :map, locals: { locations: location_gateway.all }
 end
 
@@ -34,7 +35,17 @@ get '/location' do
     Struct.new(:latitude, :longitude).new(params[:latitude], params[:longitude])
   )
 
-  erb :location, locals: { location: location }
+  erb :location, locals: {
+    location: location,
+    edit_location_path: RoutesHelper.edit_location_path(
+      latitude: location.latitude,
+      longitude: location.longitude
+    ),
+    delete_location_path: RoutesHelper.delete_location_path(
+      latitude: location.latitude,
+      longitude: location.longitude
+    )
+  }
 end
 
 post '/register' do
