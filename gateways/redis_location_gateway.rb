@@ -8,50 +8,56 @@ class RedisLocationGateway
   LOCATIONS_COLLECTION_NAME = 'locations'
 
   def save(data)
-    locations << {
+    locations_data = parsed_locations_data
+
+    locations_data << {
       'latitude' => data.latitude,
       'longitude' => data.longitude
     }
 
-    client.set(LOCATIONS_COLLECTION_NAME, locations.to_json)
+    client.set(LOCATIONS_COLLECTION_NAME, locations_data.to_json)
   end
 
   def all
-    return [] if locations.empty?
+    locations_data = parsed_locations_data
 
-    locations.map do |location|
-      Struct.new(
-        :latitude,
-        :longitude
-      ).new(
+    return [] if locations_data.empty?
+
+    locations_data.map do |location|
+      Struct.new(:latitude, :longitude).new(
         location['latitude'],
         location['longitude']
       )
     end
   end
 
-  def delete_all
-    setup_empty_locations_array
+  def delete(data)
+    locations_data = parsed_locations_data
 
-    @locations = []
+    locations_data.delete(
+      {
+        'latitude' => data.latitude,
+        'longitude' => data.longitude
+      }
+    )
+
+    client.set(LOCATIONS_COLLECTION_NAME, locations_data.to_json)
   end
 
-  def find_by_coordinates(location)
+  def delete_all
+    client.set(LOCATIONS_COLLECTION_NAME, [].to_json)
+  end
+
+  def find_by_coordinates(data)
     all.find do |l|
-      l.latitude == location.latitude && l.longitude == location.longitude
+      l.latitude == data.latitude && l.longitude == data.longitude
     end
   end
 
   private
 
-  def locations
-    setup_empty_locations_array if client.get(LOCATIONS_COLLECTION_NAME).nil?
-
-    @locations ||= JSON.parse(client.get(LOCATIONS_COLLECTION_NAME))
-  end
-
-  def setup_empty_locations_array
-    client.set(LOCATIONS_COLLECTION_NAME, [].to_json)
+  def parsed_locations_data
+    JSON.parse(client.get(LOCATIONS_COLLECTION_NAME))
   end
 
   def client
