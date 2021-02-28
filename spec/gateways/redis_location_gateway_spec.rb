@@ -95,6 +95,36 @@ describe RedisLocationGateway do
     end
   end
 
+  describe '#delete' do
+    context 'when location with passed coordinates exists in database and ' \
+      'coordinates passed as float values' do
+      let(:latitude) { 35.346245235 }
+      let(:longitude) { 82.12125352 }
+
+      it 'removes location with same coordinates as passed' do
+        location_data = Struct.new(:latitude, :longitude).new(latitude, longitude)
+        gateway.save(location_data)
+
+        gateway.delete(location_data)
+        expect(gateway.find_by_coordinates(location_data)).to be_nil
+      end
+    end
+
+    context 'when location with passed coordinates exists in database and ' \
+      'coordinates passed as string values' do
+      let(:latitude) { '35.346245235' }
+      let(:longitude) { '82.12125352' }
+
+      it 'removes location with same coordinates as passed' do
+        location_data = Struct.new(:latitude, :longitude).new(latitude.to_f, longitude.to_f)
+        gateway.save(location_data)
+
+        gateway.delete(location_data)
+        expect(gateway.find_by_coordinates(location_data)).to be_nil
+      end
+    end
+  end
+
   describe '#all' do
     context 'when there is no saved locations' do
       it 'returns empty object' do
