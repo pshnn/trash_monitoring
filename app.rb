@@ -6,6 +6,10 @@ require './gateways/redis_location_gateway'
 require './presenters/json_presenter'
 require './helpers/routes_helper'
 
+use Rack::Auth::Basic, 'Restricted Area' do |username, password|
+  username == ENV['HTTP_AUTH_USERNAME'] && password == ENV['HTTP_AUTH_PASSWORD']
+end
+
 def location_gateway
   RedisLocationGateway.new
 end
