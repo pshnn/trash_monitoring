@@ -11,6 +11,10 @@ class RoutesHelper
       '/map'
     end
 
+    def register_location_path
+      '/register'
+    end
+
     def edit_location_path(latitude: nil, longitude: nil)
       return '/locations/edit' unless latitude && longitude
 
