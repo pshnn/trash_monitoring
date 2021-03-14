@@ -50,4 +50,10 @@ describe RoutesHelper do
       end
     end
   end
+
+  describe '.register_location_path' do
+    it 'returns proper path' do
+      expect(described_class.register_location_path).to eq '/register'
+    end
+  end
 end
