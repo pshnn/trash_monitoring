@@ -3,3 +3,4 @@
 Dir[File.join(__dir__, '..', 'gateways', '*.rb')].sort.each { |file| require file }
 Dir[File.join(__dir__, '..', 'presenters', '*.rb')].sort.each { |file| require file }
 Dir[File.join(__dir__, '..', 'helpers', '*.rb')].sort.each { |file| require file }
+Dir[File.join(__dir__, '..', 'validators', '*.rb')].sort.each { |file| require file }
