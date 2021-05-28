@@ -16,18 +16,17 @@ end
 
 get RoutesHelper.root_path do
   locations = location_gateway.all.map do |l|
-    Struct.new(
-      :latitude,
-      :longitude,
-      :link
-    ).new(
+    Struct.new(:latitude, :longitude, :link).new(
       l.latitude,
       l.longitude,
       "/location?latitude=#{l.latitude}&longitude=#{l.longitude}"
     )
   end
 
-  erb :index, locals: { locations: locations }
+  erb :index, locals: {
+    locations: locations,
+    register_location_path: RoutesHelper.register_location_path
+  }
 end
 
 get RoutesHelper.map_path do
@@ -52,15 +51,23 @@ get '/location' do
   }
 end
 
-post '/register' do
-  location_gateway.save(
-    Struct.new(:latitude, :longitude).new(
-      params[:latitude],
-      params[:longitude]
-    )
+post RoutesHelper.register_location_path do
+  location_data = Struct.new(:latitude, :longitude).new(
+    params[:latitude],
+    params[:longitude]
   )
 
-  redirect to '/'
+  if (params[:latitude] && params[:longitude]) &&
+     (!params[:latitude].empty? && !params[:longitude].empty?)
+    location_gateway.save(
+      Struct.new(:latitude, :longitude).new(
+        params[:latitude],
+        params[:longitude]
+      )
+    )
+  end
+
+  redirect to RoutesHelper.root_path
 end
 
 delete RoutesHelper.delete_location_path do
