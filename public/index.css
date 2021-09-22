@@ -16,3 +16,8 @@
 .location-form {
   margin: 10px 0;
 }
+
+.dark-theme {
+  background: black;
+  color: white;
+}
