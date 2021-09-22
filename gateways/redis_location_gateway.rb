@@ -45,7 +45,7 @@ class RedisLocationGateway
   end
 
   def delete_all
-    client.set(LOCATIONS_COLLECTION_NAME, [].to_json)
+    client.del(LOCATIONS_COLLECTION_NAME)
   end
 
   def find_by_coordinates(data)
@@ -57,7 +57,10 @@ class RedisLocationGateway
   private
 
   def parsed_locations_data
-    JSON.parse(client.get(LOCATIONS_COLLECTION_NAME))
+    data = client.get(LOCATIONS_COLLECTION_NAME)
+    return JSON.parse('[]') if data.nil?
+
+    JSON.parse(data)
   end
 
   def client
