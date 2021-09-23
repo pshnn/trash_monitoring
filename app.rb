@@ -88,6 +88,8 @@ post RoutesHelper.import_locations_path do
 
   locations.each do |location|
     location_dto = Struct.new(:latitude, :longitude).new(location['latitude'], location['longitude'])
+    next unless location_gateway.find_by_coordinates(location_dto).nil?
+
     location_gateway.save(location_dto)
   end
 
