@@ -2,6 +2,8 @@
 
 require 'sinatra'
 
+require 'honeybadger'
+
 require './gateways/redis_location_gateway'
 require './presenters/json_presenter'
 require './helpers/routes_helper'

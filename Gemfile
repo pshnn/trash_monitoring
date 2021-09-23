@@ -7,6 +7,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 ruby '2.6.6'
 
 gem 'dotenv', '2.7.6'
+gem 'honeybadger', '~> 4.0'
 gem 'pry', '0.13.1'
 gem 'puma', '~> 4.3.8'
 gem 'redis', '4.2.2'
