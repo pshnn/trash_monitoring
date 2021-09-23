@@ -1,0 +1,10 @@
+<h1>Import locations</h1>
+
+<% error_messages.each do |message| %>
+  <li><%= message %></li>
+<% end %>
+
+<form action="<%= import_locations_path %>" method="POST">
+  <textarea id="locations" name="locations" cols="30" rows="10"></textarea>
+  <input type="submit">
+</form>

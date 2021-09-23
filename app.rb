@@ -77,3 +77,25 @@ end
 get '/export/locations' do
   JsonPresenter.to_json(location_gateway.all)
 end
+
+get RoutesHelper.import_locations_path do
+  erb :import_locations, locals: { import_locations_path: RoutesHelper.import_locations_path, error_messages: [] }
+end
+
+post RoutesHelper.import_locations_path do
+  locations = JSON.parse(params[:locations])
+  locations.map! { |location| JSON.parse(location) } if locations.first.is_a? String
+
+  locations.each do |location|
+    location_dto = Struct.new(:latitude, :longitude).new(location['latitude'], location['longitude'])
+    location_gateway.save(location_dto)
+  end
+
+  redirect to RoutesHelper.root_path
+rescue JSON::ParserError => e
+  erb :import_locations,
+      locals: {
+        import_locations_path: RoutesHelper.import_locations_path,
+        error_messages: ['Something went wrong', e.message]
+      }
+end

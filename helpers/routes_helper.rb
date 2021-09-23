@@ -22,5 +22,9 @@ class RoutesHelper
 
       "/locations?latitude=#{latitude}&longitude=#{longitude}"
     end
+
+    def import_locations_path
+      '/import/locations'
+    end
   end
 end

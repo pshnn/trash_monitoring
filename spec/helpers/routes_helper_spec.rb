@@ -50,4 +50,10 @@ describe RoutesHelper do
       end
     end
   end
+
+  describe '.import_locations_path' do
+    it 'returns proper path' do
+      expect(described_class.import_locations_path).to(eq('/import/locations'))
+    end
+  end
 end
