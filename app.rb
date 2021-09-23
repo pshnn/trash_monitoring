@@ -85,14 +85,15 @@ get RoutesHelper.import_locations_path do
 end
 
 post RoutesHelper.import_locations_path do
+  gateway = RedisLocationGateway.new
   locations = JSON.parse(params[:locations])
   locations.map! { |location| JSON.parse(location) } if locations.first.is_a? String
 
   locations.each do |location|
     location_dto = Struct.new(:latitude, :longitude).new(location['latitude'], location['longitude'])
-    next unless location_gateway.find_by_coordinates(location_dto).nil?
+    next unless gateway.find_by_coordinates(location_dto).nil?
 
-    location_gateway.save(location_dto)
+    gateway.save(location_dto)
   end
 
   redirect to RoutesHelper.root_path
