@@ -16,7 +16,9 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require_relative '../validators/coordinates_validator'
+%w[gateways presenters helpers validators].each do |directory|
+  Dir[File.join(__dir__, '..', directory, '*.rb')].sort.each { |file| require file }
+end
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
