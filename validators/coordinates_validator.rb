@@ -2,15 +2,13 @@
 
 # Validates incoming location data
 class CoordinatesValidator
-  NO_LATITUDE_ERROR = 'Latitude must be present'
-  NO_LONGITUDE_ERROR = 'Longitude must be present'
   FLOAT_REGEXP = /[+-]?[\d_]+\.[\d_]+(e[+-]?[\d_]+)?\b|[+-]?[\d_]+e[+-]?[\d_]+\b/.freeze
 
   attr_reader :errors
 
   def initialize(data)
-    @latitude = data.latitude
-    @longitude = data.longitude
+    @latitude = data.latitude.to_s
+    @longitude = data.longitude.to_s
 
     @errors = []
   end
@@ -35,15 +33,23 @@ class CoordinatesValidator
   attr_reader :latitude, :longitude
 
   def validate_latitude
-    add_error NO_LATITUDE_ERROR if coordinates_floatlike? latitude
+    return add_error 'Latitude must be present' if coordinate_empty? latitude
+
+    add_error 'Invalid latitude' if coordinate_floatlike? latitude
   end
 
   def validate_longitude
-    add_error NO_LONGITUDE_ERROR if coordinates_floatlike? longitude
+    return add_error 'Longitude must be present' if coordinate_empty? longitude
+
+    add_error 'Invalid longitude' if coordinate_floatlike? longitude
   end
 
-  def coordinates_floatlike?(coordinate)
+  def coordinate_floatlike?(coordinate)
     coordinate.to_s !~ FLOAT_REGEXP
+  end
+
+  def coordinate_empty?(coordinate)
+    coordinate.nil? || coordinate.empty?
   end
 
   def add_error(message)

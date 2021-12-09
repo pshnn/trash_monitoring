@@ -5,6 +5,7 @@ require 'sinatra'
 require './gateways/redis_location_gateway'
 require './presenters/json_presenter'
 require './helpers/routes_helper'
+require './validators/coordinates_validator'
 
 use Rack::Auth::Basic, 'Restricted Area' do |username, password|
   username == ENV['HTTP_AUTH_USERNAME'] && password == ENV['HTTP_AUTH_PASSWORD']
@@ -15,17 +16,10 @@ def location_gateway
 end
 
 get RoutesHelper.root_path do
-  locations = location_gateway.all.map do |l|
-    Struct.new(:latitude, :longitude, :link).new(
-      l.latitude,
-      l.longitude,
-      "/location?latitude=#{l.latitude}&longitude=#{l.longitude}"
-    )
-  end
-
   erb :index, locals: {
-    locations: locations,
-    register_location_path: RoutesHelper.register_location_path
+    locations_count: location_gateway.count,
+    register_location_path: RoutesHelper.register_location_path,
+    location_errors: []
   }
 end
 
@@ -56,18 +50,24 @@ post RoutesHelper.register_location_path do
     params[:latitude],
     params[:longitude]
   )
+  validator = CoordinatesValidator.validate location_data
 
-  if (params[:latitude] && params[:longitude]) &&
-     (!params[:latitude].empty? && !params[:longitude].empty?)
+  if validator.errors.empty?
     location_gateway.save(
       Struct.new(:latitude, :longitude).new(
         params[:latitude],
         params[:longitude]
       )
     )
-  end
 
-  redirect to RoutesHelper.root_path
+    redirect to RoutesHelper.root_path
+  else
+    erb :index, locals: {
+      locations_count: location_gateway.count,
+      register_location_path: RoutesHelper.register_location_path,
+      location_errors: validator.errors
+    }
+  end
 end
 
 delete RoutesHelper.delete_location_path do

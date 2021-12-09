@@ -30,6 +30,10 @@ describe CoordinatesValidator do
       it 'returns object with errors' do
         expect(described_class.validate(data).errors.count).to be > 0
       end
+
+      it 'returns object with proper message' do
+        expect(described_class.validate(data).errors).to include 'Invalid latitude'
+      end
     end
 
     context 'when data passed with no latitude' do
@@ -74,6 +78,10 @@ describe CoordinatesValidator do
       it 'returns object with errors' do
         expect(described_class.validate(data).errors.count).to be > 0
       end
+
+      it 'returns object with proper message' do
+        expect(described_class.validate(data).errors).to include 'Invalid longitude'
+      end
     end
 
     context 'when data passed with float like longitude' do
@@ -85,6 +93,14 @@ describe CoordinatesValidator do
             Struct.new(:latitude, :longitude).new('87.34', coordinate)
           ).errors.count).to eq 0
         end
+      end
+    end
+
+    context 'when data passed with not float like latitude and empty longitude' do
+      let(:data) { instance_double('Location', latitude: 'sdf89asfd7', longitude: '') }
+
+      it 'returns an object with 2 errors' do
+        expect(described_class.validate(data).errors.count).to eq 2
       end
     end
   end
