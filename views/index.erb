@@ -1,14 +1,26 @@
 <button class="js-get-location-btn btn">Get location</button>
-<form action="/register" method="POST" class="location-form">
-  <label for="latitude">latitude</label>
-  <input type="text" name="latitude" class="js-latitude">
-  <label for="longitude">longitude</label>
-  <input type="text" name="longitude" class="js-longitude">
+
+<% location_errors.each do |error| %>
+  <li><%= error %></li>
+<% end %>
+
+<form action="<%= register_location_path %>" method="POST" class="location-form">
+  <div>
+    <label for="latitude">Latitude</label>
+    <input value="<%= params[:latitude] %>" type="text" name="latitude" class="js-latitude">
+  </div>
+  <div>
+    <label for="longitude">Longitude</label>
+    <input value="<%= params[:longitude] %>" type="text" name="longitude" class="js-longitude">
+  </div>
   <input type="submit" class="btn">
 </form>
+
 <br>
+
 <h3>Locations</h3>
 <div>
-  <p>Registered locations: <%= locations.count %></p>
+  <p>Registered locations: <%= locations_count %></p>
 </div>
+
 <script src="index.js"></script>

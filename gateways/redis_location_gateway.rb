@@ -54,6 +54,10 @@ class RedisLocationGateway
     end
   end
 
+  def count
+    parsed_locations_data.count
+  end
+
   private
 
   def parsed_locations_data

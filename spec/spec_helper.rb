@@ -15,6 +15,11 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+%w[gateways presenters helpers validators].each do |directory|
+  Dir[File.join(__dir__, '..', directory, '*.rb')].sort.each { |file| require file }
+end
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

@@ -150,4 +150,32 @@ describe RedisLocationGateway do
       end
     end
   end
+
+  describe '#count' do
+    context 'when there is no locations' do
+      it 'returns 0' do
+        expect(gateway.count).to eq 0
+      end
+    end
+
+    context 'when there are some locations' do
+      before do
+        3.times do
+          gateway.save(
+            Struct.new(
+              :latitude,
+              :longitude
+            ).new(
+              54.2374627634,
+              34.9823742634
+            )
+          )
+        end
+      end
+
+      it 'returns number of locations' do
+        expect(gateway.count).to eq 3
+      end
+    end
+  end
 end
